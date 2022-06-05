@@ -150,4 +150,5 @@ public:
     bool IsTransactionAllowed(const CTransaction &tx, CValidationState &state) const;
     ActiveSporkMap GetActiveSporks() const { return mempoolSporks; }
 };
+
 #endif

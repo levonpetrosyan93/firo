@@ -666,7 +666,7 @@ UniValue protx_update_service(const JSONRPCRequest& request)
     }
 
     FundSpecialTx(pwallet, tx, ptx, feeSource);
-    
+
     SignSpecialTxPayloadByHash(tx, ptx, keyOperator);
     SetTxPayload(tx, ptx);
 
