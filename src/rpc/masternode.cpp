@@ -15,7 +15,9 @@
 #include "utilmoneystr.h"
 #include "txmempool.h"
 
+#ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
+#endif
 #include "wallet/rpcwallet.h"
 #include "wallet/coincontrol.h"
 

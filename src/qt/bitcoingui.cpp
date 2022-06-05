@@ -284,8 +284,10 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *_platformStyle, const NetworkStyle *
     this->installEventFilter(this);
 
     // Initially wallet actions should be disabled
+#ifdef ENABLE_WALLET
     setWalletActionsEnabled(false);
 
+#endif
     // Subscribe to notifications from core
     subscribeToCoreSignals();
 
@@ -462,9 +464,11 @@ void BitcoinGUI::createActions()
     toggleHideAction = new QAction(tr("&Show / Hide"), this);
     toggleHideAction->setStatusTip(tr("Show or hide the main Window"));
 
+#ifdef ENABLE_WALLET
     encryptWalletAction = new QAction(tr("&Encrypt Wallet..."), this);
     encryptWalletAction->setStatusTip(tr("Encrypt the private keys that belong to your wallet"));
     encryptWalletAction->setCheckable(true);
+#endif
     backupWalletAction = new QAction(tr("&Backup Wallet..."), this);
     backupWalletAction->setStatusTip(tr("Backup wallet to another location"));
     changePassphraseAction = new QAction(tr("&Change Passphrase..."), this);
@@ -638,7 +642,7 @@ void BitcoinGUI::setClientModel(ClientModel *_clientModel)
         {
             walletFrame->setClientModel(_clientModel);
         }
-#endif // ENABLE_WALLET
+#endif
         unitDisplayControl->setOptionsModel(_clientModel->getOptionsModel());
 
         OptionsModel* optionsModel = _clientModel->getOptionsModel();
@@ -646,16 +650,16 @@ void BitcoinGUI::setClientModel(ClientModel *_clientModel)
         {
             // be aware of the tray icon disable state change reported by the OptionsModel object.
             connect(optionsModel,SIGNAL(hideTrayIconChanged(bool)),this,SLOT(setTrayIconVisible(bool)));
-
             // update lelantus page if option is changed.
             connect(optionsModel,SIGNAL(lelantusPageChanged(bool)),this,SLOT(updateLelantusPage()));
-
             // initialize the disable state of the tray icon with the current value in the model.
             setTrayIconVisible(optionsModel->getHideTrayIcon());
         }
         {
+#ifdef ENABLE_WALLET
             auto blocks = clientModel->getNumBlocks();
-            checkZnodeVisibility(blocks);
+            checkZnodeVisibility(blocks);           
+#endif
 
 #ifdef ENABLE_WALLET
             checkSigmaVisibility(blocks);
@@ -1094,9 +1098,9 @@ void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVer
 #ifdef ENABLE_WALLET
     checkSigmaVisibility(count);
     checkLelantusVisibility(count);
+    checkZnodeVisibility(count);
 #endif // ENABLE_WALLET
 
-    checkZnodeVisibility(count);
 }
 
 
@@ -1506,7 +1510,9 @@ void BitcoinGUI::checkSigmaVisibility(int numBlocks)
     auto allowSigmaPage = sigma::IsSigmaAllowed(numBlocks) && !lelantus::IsLelantusAllowed(numBlocks);
     if (allowSigmaPage != sigmaAction->isVisible()) {
         if (!allowSigmaPage && sigmaAction->isChecked()) {
+#ifdef ENABLE_WALLET
             gotoOverviewPage();
+#endif
         }
         sigmaAction->setVisible(allowSigmaPage);
     }
@@ -1523,7 +1529,9 @@ void BitcoinGUI::checkLelantusVisibility(int numBlocks)
 
     if (allowLelantusPage != lelantusAction->isVisible()) {
         if (!allowLelantusPage && lelantusAction->isChecked()) {
+#ifdef ENABLE_WALLET
             gotoOverviewPage();
+#endif
         }
         lelantusAction->setVisible(allowLelantusPage);
     }
