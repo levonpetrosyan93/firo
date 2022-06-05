@@ -286,6 +286,7 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *_platformStyle, const NetworkStyle *
     // Initially wallet actions should be disabled
 #ifdef ENABLE_WALLET
     setWalletActionsEnabled(false);
+
 #endif
     // Subscribe to notifications from core
     subscribeToCoreSignals();
@@ -1099,7 +1100,6 @@ void BitcoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVer
     checkLelantusVisibility(count);
     checkZnodeVisibility(count);
 #endif // ENABLE_WALLET
-
 
 }
 

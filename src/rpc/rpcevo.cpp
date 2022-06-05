@@ -666,6 +666,7 @@ UniValue protx_update_service(const JSONRPCRequest& request)
     }
 
     FundSpecialTx(pwallet, tx, ptx, feeSource);
+    
     SignSpecialTxPayloadByHash(tx, ptx, keyOperator);
     SetTxPayload(tx, ptx);
 
@@ -931,6 +932,7 @@ UniValue protx_list(const JSONRPCRequest& request)
     if (request.fHelp) {
         protx_list_help();
     }
+
 #ifdef ENABLE_WALLET
     CWallet* const pwallet = GetWalletForJSONRPCRequest(request);
 #else
@@ -1423,6 +1425,7 @@ UniValue spork(const JSONRPCRequest& request)
     FundSpecialTx(pwallet, tx, sporkTx, feeAddress.Get());
     SignSpecialTxPayloadByHash(tx, sporkTx, secretKey);
     SetTxPayload(tx, sporkTx);
+
     return SignAndSendSpecialTx(tx);
 #endif // ENABLE_WALLET
 }

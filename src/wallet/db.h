@@ -33,6 +33,7 @@ private:
     std::string strPath;
 
     void EnvShutdown();
+
 public:
     mutable CCriticalSection cs_db;
     DbEnv *dbenv;

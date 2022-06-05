@@ -84,6 +84,7 @@ bool Recover::askRecover(bool& newWallet)
 #ifdef ENABLE_WALLET
     namespace fs = boost::filesystem;
     fs::path walletFile = GetDataDir(true) / GetArg("-wallet", DEFAULT_WALLET_DAT);
+
     if (!fs::exists(walletFile))
     {
         newWallet = true;
