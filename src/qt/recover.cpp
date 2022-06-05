@@ -8,7 +8,6 @@
 #ifdef ENABLE_WALLET
 #include "../wallet/wallet.h"
 #endif
-
 #include "../wallet/bip39.h"
 #include "support/allocators/secure.h"
 

@@ -12,9 +12,7 @@
 #include "sync.h"
 #include "util.h"
 #include "utiltime.h"
-
 #include "wallet/wallet.h"
-
 #include "bip47/account.h"
 
 #include <atomic>

@@ -1276,7 +1276,6 @@ static UniValue spork_listToJSON(const std::map<std::string, std::pair<int, int6
 
 UniValue spork(const JSONRPCRequest& request)
 {
-
     if (request.fHelp || request.params.size() < 1)
         spork_help();
 
@@ -1297,7 +1296,6 @@ UniValue spork(const JSONRPCRequest& request)
         spork_help();
 
     // create spork
-
 #ifdef ENABLE_WALLET
     CWallet* const pwallet = GetWalletForJSONRPCRequest(request);
     CKey secretKey = ParsePrivKey(pwallet, request.params[0].get_str(), true);

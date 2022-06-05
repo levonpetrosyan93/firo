@@ -22,7 +22,6 @@
 #include "rpcconsole.h"
 #include "utilitydialog.h"
 
-
 #ifdef ENABLE_WALLET
 #include "walletframe.h"
 #include "walletmodel.h"
@@ -1317,7 +1316,6 @@ bool BitcoinGUI::eventFilter(QObject *object, QEvent *event)
 bool BitcoinGUI::handlePaymentRequest(const SendCoinsRecipient& recipient)
 {
     // URI has to be valid
-
     if (walletFrame && walletFrame->handlePaymentRequest(recipient))
     {
         showNormalIfMinimized();
@@ -1326,7 +1324,6 @@ bool BitcoinGUI::handlePaymentRequest(const SendCoinsRecipient& recipient)
     }
     return false;
 }
-
 
 void BitcoinGUI::setElysiumPendingStatus(bool pending)
 {
@@ -1519,7 +1516,6 @@ void BitcoinGUI::checkSigmaVisibility(int numBlocks)
         }
         sigmaAction->setVisible(allowSigmaPage);
     }
-
 }
 
 void BitcoinGUI::checkLelantusVisibility(int numBlocks)

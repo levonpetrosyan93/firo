@@ -7,11 +7,7 @@
 
 #include "primitives/mint_spend.h"
 #include "hdmint/mintpool.h"
-
-
 #include "wallet/walletdb.h"
-
-
 #include <list>
 
 class CHDMint;

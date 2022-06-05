@@ -14,7 +14,6 @@
 #include "wallet/wallet.h"
 #include "wallet/walletdb.h"
 #endif
-
 #include "wallet/coincontrol.h"
 
 #include <map>
