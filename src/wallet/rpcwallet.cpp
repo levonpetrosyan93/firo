@@ -157,6 +157,25 @@ std::string AccountFromValue(const UniValue& value)
     return strAccount;
 }
 
+UniValue checkYourAllMintValidity(const JSONRPCRequest& request)
+{
+    CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
+        throw JSONRPCError(RPC_WALLET_ERROR, "Invalid wallet");
+    }
+
+    std::vector <CLelantusMintMeta> listMints;
+    listMints = pwallet->zwallet->GetTracker().ListLelantusMints(false, false, false);
+
+    Scalar bnSerial;
+    for (auto it = listMints.begin(); it != listMints.end(); ++it) {
+        if (lelantus::CLelantusState::GetState()->IsUsedCoinSerialHash(bnSerial, it->hashSerial)) {
+            throw JSONRPCError(RPC_WALLET_ERROR, "Mint is used");
+        }
+    }
+    return NullUniValue;
+}
+
 UniValue getnewaddress(const JSONRPCRequest& request)
 {
     CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
@@ -4831,6 +4850,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "addwitnessaddress",        &addwitnessaddress,        true,   {"address"} },
     { "wallet",             "backupwallet",             &backupwallet,             true,   {"destination"} },
     { "wallet",             "bumpfee",                  &bumpfee,                  true,   {"txid", "options"} },
+    { "wallet",             "checkyourallMintValidity", &checkYourAllMintValidity, true,    {} },
     { "wallet",             "dumpprivkey",              &dumpprivkey_firo,        true,   {"address"}  },
     { "wallet",             "dumpwallet",               &dumpwallet_firo,         true,   {"filename"} },
     { "wallet",             "encryptwallet",            &encryptwallet,            true,   {"passphrase"} },
