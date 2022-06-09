@@ -161,19 +161,20 @@ UniValue checkYourAllMintValidity(const JSONRPCRequest& request)
 {
     CWallet * const pwallet = GetWalletForJSONRPCRequest(request);
     if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
-        throw JSONRPCError(RPC_WALLET_ERROR, "Invalid wallet");
+        assert(false || "Invalid wallet");
     }
-
-    std::vector <CLelantusMintMeta> listMints;
-    listMints = pwallet->zwallet->GetTracker().ListLelantusMints(false, false, false);
-
+    
+    auto listMints = pwallet->zwallet->GetTracker().ListLelantusMints(true, false, false);
     Scalar bnSerial;
+
+    UniValue usedMints(UniValue::VARR);
+
     for (auto it = listMints.begin(); it != listMints.end(); ++it) {
         if (lelantus::CLelantusState::GetState()->IsUsedCoinSerialHash(bnSerial, it->hashSerial)) {
-            throw JSONRPCError(RPC_WALLET_ERROR, "Mint is used");
+            usedMints.push_back(it->GetPubCoinValueHash().GetHex());
         }
     }
-    return NullUniValue;
+    return usedMints;
 }
 
 UniValue getnewaddress(const JSONRPCRequest& request)
