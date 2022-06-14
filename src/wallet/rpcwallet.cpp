@@ -163,8 +163,20 @@ UniValue checkYourAllMintValidity(const JSONRPCRequest& request)
     if (!EnsureWalletIsAvailable(pwallet, request.fHelp)) {
         assert(false || "Invalid wallet");
     }
-    
-    auto listMints = pwallet->zwallet->GetTracker().ListLelantusMints(true, false, false);
+
+    if (request.fHelp) {
+        throw std::runtime_error(
+            "checkYourAllMintValidity\n"
+            "checkYourAllMintValidity returns invalid(valid in your wallet but invalid from the outside) mints vector\n"
+            "\nResult\n"
+            "\"vector of invalid mints\""
+            "\n\nExamples:\n"
+            + HelpExampleCli("checkYourAllMintValidity", "")
+            + HelpExampleRpc("checkYourAllMintValidity", "")
+        );
+    }
+
+    const auto listMints = pwallet->zwallet->GetTracker().ListLelantusMints(true, false, false);
     Scalar bnSerial;
 
     UniValue usedMints(UniValue::VARR);
@@ -174,7 +186,7 @@ UniValue checkYourAllMintValidity(const JSONRPCRequest& request)
             usedMints.push_back(it->GetPubCoinValueHash().GetHex());
         }
     }
-    return usedMints;
+    return usedMints; /// if "usedMints" is empty, returns empty vector
 }
 
 UniValue getnewaddress(const JSONRPCRequest& request)
